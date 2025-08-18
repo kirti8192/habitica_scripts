@@ -26,5 +26,5 @@ jobs:
         HABITICA_USER_ID: ${{ secrets.HABITICA_USER_ID }}
         HABITICA_API_TOKEN: ${{ secrets.HABITICA_API_TOKEN }}
       run: |
-        pwd
+        ls -la
         python auto_accept_quest.py
