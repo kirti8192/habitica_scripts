@@ -27,4 +27,4 @@ jobs:
         HABITICA_API_TOKEN: ${{ secrets.HABITICA_API_TOKEN }}
       run: |
         ls -la
-        python auto_accept_quest.py
+        python auto_accept_quests.py
