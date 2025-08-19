@@ -9,6 +9,7 @@ url = "https://habitica.com/api/v3/groups/party/quests/accept"
 headers = {
     "x-api-user": user_id,
     "x-api-key": api_token,
+    "x-client": f"{user_id}-habitica-script",
     "Content-Type": "application/json"
 }
 
