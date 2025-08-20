@@ -1,4 +1,4 @@
-name: Auto Accept Quest
+name: Habitica automations
 
 on:
   schedule:
