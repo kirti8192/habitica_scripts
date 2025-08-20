@@ -31,6 +31,7 @@ jobs:
         python auto_accept_quests.py
 
   cast-valorous-presence:
+    if: github.event.schedule == '1 0 * * *'
     runs-on: ubuntu-latest
 
     steps:
