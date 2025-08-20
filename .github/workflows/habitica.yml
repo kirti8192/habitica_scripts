@@ -1,4 +1,4 @@
-name: Auto Accept Quest
+name: quest_related
 
 on:
   schedule:
