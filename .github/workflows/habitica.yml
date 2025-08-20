@@ -7,7 +7,7 @@ on:
   workflow_dispatch:        # allows manual triggering
 
 jobs:
-  run-script:
+  auto-accept-quests:
     runs-on: ubuntu-latest
 
     steps:
@@ -50,4 +50,4 @@ jobs:
         HABITICA_USER_ID: ${{ secrets.HABITICA_USER_ID }}
         HABITICA_API_TOKEN: ${{ secrets.HABITICA_API_TOKEN }}
       run: |
-        python cast_valorous_presence.py
+        python auto_cast_valorous_presence.py
