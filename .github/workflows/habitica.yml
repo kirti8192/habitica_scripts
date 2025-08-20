@@ -6,9 +6,6 @@ on:
     - cron: "1 0 * * *"      # 12:01 AM daily
   workflow_dispatch:
 
-env:
-  CAST_VALOROUS_PRESENCE: "false"   # flip to "false" to disable
-
 jobs:
   auto-accept-quests:
     if: github.event.schedule == '*/15 * * * *'
@@ -35,7 +32,7 @@ jobs:
         python auto_accept_quests.py
 
   cast-valorous-presence:
-    if: github.event.schedule == '1 0 * * *' && env.CAST_VALOROUS_PRESENCE == 'true'
+    if: github.event.schedule == '1 0 * * *'
     runs-on: ubuntu-latest
 
     steps:
