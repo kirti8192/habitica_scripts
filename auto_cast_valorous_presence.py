@@ -5,13 +5,13 @@ import requests
 BASE = "https://habitica.com/api/v3"
 
 # Habitica credentials
-user_id = "42bf3777-022a-4b8d-abdf-176f7b8e7be9"
-api_token = "b2d8430a-3c2d-45ba-9a40-af7372e00380"
+USER_ID = "42bf3777-022a-4b8d-abdf-176f7b8e7be9"
+API_TOKEN = "b2d8430a-3c2d-45ba-9a40-af7372e00380"
 
 HEADERS = {
-    "x-api-user": user_id,
-    "x-api-key": api_token,
-    "x-client": f"{user_id}-habitica-script",
+    "x-api-user": USER_ID,
+    "x-api-key": API_TOKEN,
+    "x-client": f"{USER_ID}-habitica-script",
     "Content-Type": "application/json"
 }
 
