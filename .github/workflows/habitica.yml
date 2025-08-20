@@ -1,13 +1,11 @@
-name: Habitica automations
+name: Auto Accept Quest
 
 on:
-  schedule:
-    - cron: "*/15 * * * *"  # every 15 minutes
-    - cron: "1 0 * * *"     # 12:01 AM daily
   workflow_dispatch:        # allows manual triggering
 
 jobs:
   auto-accept-quests:
+    if: github.event.schedule == '*/15 * * * *'
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +29,7 @@ jobs:
         python auto_accept_quests.py
 
   cast-valorous-presence:
+    if: github.event.schedule == '1 0 * * *'
     runs-on: ubuntu-latest
 
     steps:
