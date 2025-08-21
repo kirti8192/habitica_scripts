@@ -1,0 +1,31 @@
+name: auto_accept_quests
+on:
+  schedule:
+    - cron: "*/15 * * * *"  # every 15 mins
+  workflow_dispatch:
+
+jobs:
+  auto-accept-quests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Log trigger & time
+      run: |
+        echo "event: ${{ github.event_name }}"
+        echo "schedule: ${{ github.event.schedule }}"
+        echo "UTC now: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+        echo "Runner TZ: $(date +'%Y-%m-%d %H:%M:%S %Z')"
+    - name: Run script
+      run: |
+        python auto_accept_quests.py

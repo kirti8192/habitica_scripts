@@ -1,0 +1,48 @@
+name: cast_valorous_presence
+
+on:
+  schedule:
+    # LA midnight = 12:01 AM America/Los_Angeles
+    # PDT (UTC-7): 07:01 UTC
+    - cron: "1 7 * * *"
+    # PST (UTC-8): 08:01 UTC
+    # - cron: "1 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cast_valorous_presence
+  cancel-in-progress: false
+
+jobs:
+  cast-valorous-presence:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Log trigger & time
+        run: |
+          echo "event: ${{ github.event_name }}"
+          echo "schedule: ${{ github.event.schedule }}"
+          echo "run_id: ${{ github.run_id }}"
+          echo "run_number: ${{ github.run_number }}"
+          echo "UTC now: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "Runner local: $(date +'%Y-%m-%d %H:%M:%S %Z')"
+          echo "LA time: $(TZ=America/Los_Angeles date +'%Y-%m-%d %H:%M:%S %Z (America/Los_Angeles)')"
+
+      - name: Run Valorous Presence script
+        run: |
+          python auto_cast_valorous_presence.py
