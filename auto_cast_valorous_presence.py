@@ -20,10 +20,10 @@ def _req(method, path):
     r = requests.request(method, url, headers=HEADERS, timeout=20)
     try:
         r.raise_for_status()
-    except requests.HTTPError as e:
+    except requests.HTTPError:
         print(f"[ERROR] {method} {path} -> {r.status_code} {r.text}", flush=True)
         raise
-    return r.json()["data"]
+    return r.json().get("data")
 
 def get_party():
     return _req("GET", "/groups/party")
@@ -37,44 +37,51 @@ def get_user():
 def cast_valorous_presence():
     return _req("POST", "/user/class/cast/valorousPresence")
 
-def main():
+def main() -> int:
     if not USER_ID or not API_TOKEN:
         print("[ERROR] HABITICA_USER_ID or HABITICA_API_TOKEN is missing.", flush=True)
-        sys.exit(1)
+        return 1
 
     # 1) Is there an active quest?
-    party = get_party()
-    quest = party.get("quest") or {}
-    if not quest or not quest.get("active"):
-        print("[INFO] No active quest; skipping cast.", flush=True)
-        return
+    try:
+        party = get_party()
+    except Exception:
+        return 1
+
+    quest = (party or {}).get("quest") or {}
+    if not quest.get("active"):
+        print("[INFO] No active quest; failing run (nothing to cast).", flush=True)
+        return 1  # ❌ fail unless we actually cast
 
     quest_key = quest.get("key")
     if not quest_key:
-        print("[INFO] No quest key found; skipping cast.", flush=True)
-        return
+        print("[INFO] No quest key found; failing run.", flush=True)
+        return 1
 
-    # 2) Look up quest definition to determine type (boss vs collection)
-    content = get_content()
-    quests = content.get("quests", {})
-    qdef = quests.get(quest_key)
+    # 2) Boss vs collection?
+    try:
+        content = get_content()
+    except Exception:
+        return 1
+
+    qdef = (content or {}).get("quests", {}).get(quest_key)
     if not qdef:
-        print(f"[INFO] Quest '{quest_key}' not found in /content; skipping cast.", flush=True)
-        return
+        print(f"[INFO] Quest '{quest_key}' not found in /content; failing run.", flush=True)
+        return 1
 
     is_boss = bool(qdef.get("boss"))
     if not is_boss:
-        print(f"[INFO] Quest '{quest_key}' is a collection quest; skipping cast to save MP.", flush=True)
-        return
+        print(f"[INFO] Quest '{quest_key}' is a collection quest; failing run (we only cast on boss).", flush=True)
+        return 1  # ❌ fail unless we actually cast
 
-    # 3) Cast
+    # 3) Cast — success only if this call goes through
     try:
         res = cast_valorous_presence()
         print(f"[OK] Cast Valorous Presence on boss quest '{quest_key}'. Response: {res}", flush=True)
+        return 0  # ✅ success: we casted
     except Exception:
         # Already logged by _req
-        # Don’t fail the whole workflow just because the cast didn’t go through
-        pass
+        return 1  # ❌ fail if cast didn't go through
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
