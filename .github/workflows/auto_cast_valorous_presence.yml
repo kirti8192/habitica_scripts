@@ -2,8 +2,8 @@ name: cast_valorous_presence
 
 on:
   schedule:
-    - cron: "0 9 * * *"
-  timezone: "America/Los_Angeles"
+    # 9:00 AM PDT (UTC-7) → 16:00 UTC
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 permissions:
