@@ -1,9 +1,10 @@
 import requests
 import sys
 import json
+import os
 
-user_id = "42bf3777-022a-4b8d-abdf-176f7b8e7be9"
-api_token = "b2d8430a-3c2d-45ba-9a40-af7372e00380"
+user_id = os.environ["HABITICA_USER_ID"]
+api_token = os.environ["HABITICA_API_TOKEN"]
 
 url = "https://habitica.com/api/v3/groups/party/quests/accept"
 
