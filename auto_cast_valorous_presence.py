@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import sys
 import requests
+import os
+
+USER_ID = os.environ["HABITICA_USER_ID"]
+API_TOKEN = os.environ["HABITICA_API_TOKEN"]
 
 BASE = "https://habitica.com/api/v3"
-
-# Habitica credentials
-USER_ID = "42bf3777-022a-4b8d-abdf-176f7b8e7be9"
-API_TOKEN = "b2d8430a-3c2d-45ba-9a40-af7372e00380"
 
 HEADERS = {
     "x-api-user": USER_ID,
