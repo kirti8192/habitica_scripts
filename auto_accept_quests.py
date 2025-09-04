@@ -26,7 +26,7 @@ except Exception:
 print("Quest Accept Response:", r.status_code, json.dumps(data))
 
 # Habitica sends {"success": True, "message": "You have accepted the quest."} when it worked
-if r.ok and data.get("success") and "accepted" in (data.get("message") or "").lower():
+if r.ok and data.get("success"):
     sys.exit(0)  # ✅ Success: quest accepted
 else:
     sys.exit(1)  # ❌ Fail: no quest, already accepted, or error
